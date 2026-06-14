@@ -338,9 +338,9 @@ body:has(.journey-hero) .main {
     padding: clamp(90px, 10vw, 140px) 28px;
     overflow: hidden;
     background:
-        radial-gradient(circle at 20% 10%, rgba(84, 125, 102, 0.42), transparent 32rem),
-        radial-gradient(circle at 85% 80%, rgba(78, 92, 126, 0.3), transparent 34rem),
-        linear-gradient(145deg, #172d29, #233a35 48%, #172b31);
+        linear-gradient(rgba(80, 50, 24, 0.06), rgba(48, 33, 19, 0.2)),
+        url("../../images/journal-desk.webp") center / cover no-repeat,
+        #9c6735;
 }
 
 .quest-library::before {
@@ -348,10 +348,21 @@ body:has(.journey-hero) .main {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.18;
+    opacity: 0.38;
     background-image:
-        linear-gradient(105deg, transparent 47%, rgba(255, 255, 255, 0.08) 50%, transparent 53%),
-        radial-gradient(circle at 70% 25%, rgba(255, 224, 160, 0.16), transparent 20rem);
+        radial-gradient(ellipse at center, transparent 42%, rgba(61, 37, 18, 0.45) 100%),
+        linear-gradient(105deg, transparent 47%, rgba(255, 239, 198, 0.1) 50%, transparent 53%);
+}
+
+.quest-library::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    background:
+        repeating-linear-gradient(0deg, transparent 0 4px, rgba(62, 38, 19, 0.18) 4px 5px);
+    mix-blend-mode: multiply;
 }
 
 .quest-book-wrap {
@@ -438,43 +449,113 @@ body:has(.journey-hero) .main {
     grid-template-columns: minmax(300px, 0.42fr) minmax(480px, 0.58fr);
     min-height: 690px;
     color: #493d2d;
-    border: 14px solid #40382f;
-    border-radius: 18px 24px 24px 18px;
-    background: #ede1c8;
+    border: 26px solid transparent;
+    border-radius: 24px 31px 31px 24px;
+    background:
+        linear-gradient(#7f4d2a, #58321d) padding-box,
+        linear-gradient(135deg, #9b6337, #4a2a18 48%, #82502d) border-box;
     box-shadow:
-        0 35px 80px rgba(5, 13, 12, 0.48),
-        0 0 0 3px #766751,
-        inset 0 0 0 2px #1e1a17;
+        0 42px 86px rgba(65, 36, 16, 0.46),
+        0 8px 20px rgba(46, 25, 11, 0.38),
+        0 0 0 3px #3b2316,
+        0 0 0 7px #8c5a35,
+        inset 0 0 0 2px rgba(255, 218, 157, 0.22);
 }
 
 .quest-book::before {
     content: "";
     position: absolute;
     z-index: 3;
-    top: 0;
-    bottom: 0;
+    top: -13px;
+    bottom: -13px;
     left: 42%;
-    width: 34px;
+    width: 44px;
     pointer-events: none;
     transform: translateX(-50%);
     background:
         linear-gradient(90deg,
-            rgba(86, 67, 43, 0.02),
-            rgba(77, 57, 34, 0.15) 30%,
-            rgba(255, 252, 235, 0.6) 48%,
-            rgba(79, 59, 35, 0.15) 72%,
-            rgba(86, 67, 43, 0.02));
-    filter: blur(1px);
+            rgba(72, 40, 19, 0.08),
+            rgba(74, 42, 20, 0.28) 27%,
+            rgba(255, 244, 210, 0.7) 48%,
+            rgba(73, 42, 20, 0.28) 73%,
+            rgba(72, 40, 19, 0.08));
+    filter: blur(1.4px);
 }
 
 .quest-book::after {
     content: "";
     position: absolute;
     z-index: 5;
-    inset: 10px;
+    inset: -16px;
     pointer-events: none;
-    border: 1px solid rgba(111, 85, 50, 0.24);
-    border-radius: 8px 13px 13px 8px;
+    border: 2px dashed rgba(229, 182, 112, 0.55);
+    border-radius: 11px 18px 18px 11px;
+    box-shadow:
+        0 0 0 7px rgba(73, 41, 22, 0.35),
+        inset 0 0 0 5px rgba(51, 28, 15, 0.2);
+}
+
+.quest-book__corner {
+    position: absolute;
+    z-index: 8;
+    width: 58px;
+    height: 58px;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, #e1bd73, #8b652c 46%, #d6ad5e 66%, #72501f);
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 235, 183, 0.36),
+        0 3px 7px rgba(44, 27, 12, 0.36);
+    clip-path: polygon(0 0, 100% 0, 100% 25%, 50% 25%, 25% 50%, 25% 100%, 0 100%);
+}
+
+.quest-book__corner::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(76, 48, 17, 0.55);
+}
+
+.quest-book__corner--tl {
+    top: -21px;
+    left: -21px;
+}
+
+.quest-book__corner--tr {
+    top: -21px;
+    right: -21px;
+    transform: rotate(90deg);
+}
+
+.quest-book__corner--bl {
+    bottom: -21px;
+    left: -21px;
+    transform: rotate(-90deg);
+}
+
+.quest-book__corner--br {
+    right: -21px;
+    bottom: -21px;
+    transform: rotate(180deg);
+}
+
+.quest-book__clasp {
+    position: absolute;
+    z-index: 9;
+    top: 50%;
+    right: -54px;
+    width: 63px;
+    height: 94px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    border: 2px solid #5a351d;
+    border-radius: 7px 15px 15px 7px;
+    background:
+        radial-gradient(circle at 71% 50%, #d5ad63 0 5px, #6d4b21 6px 8px, transparent 9px),
+        linear-gradient(90deg, #663b20, #9d6235 50%, #543018);
+    box-shadow:
+        inset 0 0 0 3px rgba(234, 188, 112, 0.2),
+        4px 7px 12px rgba(50, 27, 12, 0.35);
 }
 
 .quest-page {
@@ -483,19 +564,43 @@ body:has(.journey-hero) .main {
     padding: clamp(40px, 5vw, 68px);
     overflow: hidden;
     background:
-        radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.72), transparent 19rem),
-        repeating-linear-gradient(0deg, rgba(112, 87, 52, 0.018) 0 1px, transparent 1px 5px),
-        linear-gradient(100deg, #f4ead6, #fbf4e5 62%, #e9dcc2);
+        radial-gradient(ellipse at 5% 5%, rgba(126, 81, 35, 0.15), transparent 12rem),
+        radial-gradient(ellipse at 94% 91%, rgba(126, 81, 35, 0.13), transparent 15rem),
+        radial-gradient(circle at 17% 16%, rgba(255, 252, 228, 0.68), transparent 17rem),
+        radial-gradient(circle at 71% 38%, rgba(137, 95, 48, 0.055), transparent 8rem),
+        repeating-linear-gradient(4deg, transparent 0 7px, rgba(103, 71, 35, 0.018) 7px 8px),
+        linear-gradient(100deg, #dfc89c, #f1dfba 18%, #f4e4c2 65%, #d3b783);
+    filter: sepia(0.08);
 }
 
 .quest-page--left {
     border-radius: 5px 0 0 7px;
-    box-shadow: inset -22px 0 28px rgba(77, 57, 34, 0.08);
+    box-shadow:
+        inset -25px 0 34px rgba(77, 52, 27, 0.14),
+        inset 11px 0 16px rgba(117, 76, 37, 0.08),
+        inset 0 9px 13px rgba(139, 96, 47, 0.08),
+        inset 0 -10px 15px rgba(101, 67, 31, 0.1);
 }
 
 .quest-page--right {
     border-radius: 0 10px 10px 0;
-    box-shadow: inset 22px 0 28px rgba(77, 57, 34, 0.08);
+    box-shadow:
+        inset 25px 0 34px rgba(77, 52, 27, 0.14),
+        inset -11px 0 16px rgba(117, 76, 37, 0.08),
+        inset 0 9px 13px rgba(139, 96, 47, 0.08),
+        inset 0 -10px 15px rgba(101, 67, 31, 0.1);
+}
+
+.quest-page::after {
+    content: "";
+    position: absolute;
+    inset: 11px;
+    pointer-events: none;
+    opacity: 0.58;
+    border: 1px solid rgba(130, 87, 39, 0.27);
+    outline: 1px solid rgba(255, 248, 220, 0.42);
+    outline-offset: -6px;
+    clip-path: polygon(0.8% 0, 99.2% 0.6%, 100% 98.8%, 1% 100%, 0 51%);
 }
 
 .quest-page__ornament {
@@ -665,15 +770,15 @@ body:has(.journey-hero) .main {
     padding: 14px 16px;
     border: 1px solid rgba(131, 99, 57, 0.24);
     background:
-        linear-gradient(90deg, rgba(196, 221, 211, 0.45), rgba(255, 252, 240, 0.65) 38%),
-        rgba(255, 252, 241, 0.6);
+        linear-gradient(90deg, rgba(188, 203, 174, 0.28), rgba(247, 231, 197, 0.62) 38%),
+        rgba(245, 226, 187, 0.55);
     transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 
 .quest-item:nth-child(even) {
     background:
-        linear-gradient(90deg, rgba(220, 206, 231, 0.38), rgba(255, 252, 240, 0.65) 38%),
-        rgba(255, 252, 241, 0.6);
+        linear-gradient(90deg, rgba(200, 181, 163, 0.28), rgba(247, 231, 197, 0.62) 38%),
+        rgba(245, 226, 187, 0.55);
 }
 
 .quest-item:hover,
@@ -681,7 +786,7 @@ body:has(.journey-hero) .main {
     z-index: 1;
     transform: translateX(-3px);
     border-color: #a67b41;
-    background: rgba(255, 249, 230, 0.92);
+    background: rgba(255, 239, 203, 0.92);
 }
 
 .quest-item[hidden] {
@@ -854,6 +959,7 @@ body:not(:has(.journey-hero)) .main {
 
     .quest-library {
         padding: 62px 12px 72px;
+        background-position: center top;
     }
 
     .quest-book-wrap {
@@ -894,8 +1000,8 @@ body:not(:has(.journey-hero)) .main {
     .quest-book {
         display: block;
         min-height: 0;
-        border-width: 8px;
-        border-radius: 12px;
+        border-width: 15px;
+        border-radius: 14px;
     }
 
     .quest-book::before {
@@ -908,6 +1014,40 @@ body:not(:has(.journey-hero)) .main {
         background: linear-gradient(0deg, rgba(79, 59, 35, 0.08), rgba(255, 252, 235, 0.7), rgba(79, 59, 35, 0.08));
     }
 
+    .quest-book::after {
+        inset: -8px;
+        border-radius: 8px;
+    }
+
+    .quest-book__corner {
+        width: 40px;
+        height: 40px;
+    }
+
+    .quest-book__corner--tl {
+        top: -12px;
+        left: -12px;
+    }
+
+    .quest-book__corner--tr {
+        top: -12px;
+        right: -12px;
+    }
+
+    .quest-book__corner--bl {
+        bottom: -12px;
+        left: -12px;
+    }
+
+    .quest-book__corner--br {
+        right: -12px;
+        bottom: -12px;
+    }
+
+    .quest-book__clasp {
+        display: none;
+    }
+
     .quest-page {
         padding: 40px 24px;
     }
@@ -915,12 +1055,16 @@ body:not(:has(.journey-hero)) .main {
     .quest-page--left {
         min-height: 480px;
         border-radius: 4px 4px 0 0;
-        box-shadow: inset 0 -18px 25px rgba(77, 57, 34, 0.08);
+        box-shadow:
+            inset 0 -18px 25px rgba(77, 52, 27, 0.14),
+            inset 10px 0 15px rgba(117, 76, 37, 0.08);
     }
 
     .quest-page--right {
         border-radius: 0 0 6px 6px;
-        box-shadow: inset 0 18px 25px rgba(77, 57, 34, 0.08);
+        box-shadow:
+            inset 0 18px 25px rgba(77, 52, 27, 0.14),
+            inset -10px 0 15px rgba(117, 76, 37, 0.08);
     }
 
     .quest-book__intro {
