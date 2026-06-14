@@ -9,10 +9,17 @@ theme = "PaperMod"
 
 [params]
   defaultTheme = "auto"
+  mainSections = ["posts"]
   ShowReadingTime = true
   ShowToc = true
   ShowBreadCrumbs = true
   ShowPostNavLinks = true
+
+  [params.journeyHero]
+    eyebrow = "Wanderer's Journal"
+    title = "旅者手札"
+    subtitle = "把沿途的风、短暂的停留，以及一点点成长，写进不会遗失的旅途。"
+    button = "翻开手札"
 
 [menu]
   [[menu.main]]
@@ -47,6 +54,7 @@ theme = "PaperMod"
 
   [[menu.main]]
     identifier = "write"
-    name = "写文章"
+    name = "+"
     url = "write/"
-    weight = 50
+    title = "写文章"
+    weight = 5

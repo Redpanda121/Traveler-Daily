@@ -1,0 +1,61 @@
+{{- define "main" }}
+{{- $hero := site.Params.journeyHero }}
+
+<section class="journey-hero" style="--journey-hero: url('{{ "images/journey-hero-final.webp" | relURL }}')">
+  <div class="journey-hero__shade"></div>
+  <div class="journey-hero__content">
+    <p class="journey-kicker">{{ $hero.eyebrow | default "Wanderer's Journal" }}</p>
+    <h1>{{ $hero.title | default site.Title }}</h1>
+    <p class="journey-hero__subtitle">
+      {{ $hero.subtitle | default "记录日常，也记录一路成为自己的过程。" }}
+    </p>
+    <a class="journey-hero__button" href="#latest">
+      {{ $hero.button | default "翻开手札" }}
+      <span aria-hidden="true">↓</span>
+    </a>
+  </div>
+  <p class="journey-hero__note">下一站，也许就在一页之后</p>
+</section>
+
+<section class="journey-journal" id="latest">
+  <header class="journey-section-title">
+    <p class="journey-kicker">Recent Chapters</p>
+    <h2>路上的新页</h2>
+    <p>有些日子波澜壮阔，有些只是安静地向前走。它们都值得留下。</p>
+  </header>
+
+  <div class="journey-posts">
+    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+    {{- $paginator := .Paginate $pages }}
+    {{- range $paginator.Pages }}
+    <article class="post-entry journey-entry">
+      <div class="journey-entry__mark" aria-hidden="true">✦</div>
+      <header class="entry-header">
+        <h2>{{ .Title }}</h2>
+      </header>
+      <div class="entry-content">
+        <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+      </div>
+      <footer class="entry-footer">
+        {{- partial "post_meta.html" . -}}
+      </footer>
+      <a class="entry-link" aria-label="阅读 {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    </article>
+    {{- end }}
+  </div>
+
+  {{- if gt $paginator.TotalPages 1 }}
+  <footer class="page-footer">
+    <nav class="pagination">
+      {{- if $paginator.HasPrev }}
+      <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">上一程</a>
+      {{- end }}
+      {{- if $paginator.HasNext }}
+      <a class="next" href="{{ $paginator.Next.URL | absURL }}">下一程</a>
+      {{- end }}
+    </nav>
+  </footer>
+  {{- end }}
+</section>
+{{- end }}
