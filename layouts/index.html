@@ -8,7 +8,7 @@
     <p class="journey-hero__subtitle">
       {{ $hero.subtitle | default "记录日常，也记录一路成为自己的过程。" }}
     </p>
-    <a class="journey-hero__button" href="#latest">
+    <a class="journey-hero__button" href="#journal-book">
       {{ $hero.button | default "翻开手札" }}
       <span aria-hidden="true">↓</span>
     </a>
@@ -16,51 +16,138 @@
   <p class="journey-hero__note">下一站，也许就在一页之后</p>
 </section>
 
-<section class="journey-journal" id="latest">
-  <header class="journey-section-head">
-    <div class="journey-section-title">
-      <p class="journey-kicker">Recent Chapters</p>
-      <h2>路上的新页</h2>
-      <p>有些日子波澜壮阔，有些只是安静地向前走。它们都值得留下。</p>
-    </div>
-    <a class="journey-new-page" href="{{ "write/" | relURL }}" title="写一篇新文章">
-      <span aria-hidden="true">+</span>
-      <span>新建一页</span>
-    </a>
-  </header>
+{{- $pages := where site.RegularPages "Section" "in" (slice "posts" "guides") }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- $pages = $pages.ByDate.Reverse }}
+{{- $tags := slice }}
+{{- range $pages }}
+  {{- range (.Params.tags | default (slice "未分类")) }}
+    {{- $tags = $tags | append . }}
+  {{- end }}
+{{- end }}
+{{- $tags = $tags | uniq | sort }}
 
-  <div class="journey-posts">
-    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-    {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
-    {{- $paginator := .Paginate $pages }}
-    {{- range $paginator.Pages }}
-    <article class="post-entry journey-entry">
-      <div class="journey-entry__mark" aria-hidden="true">✦</div>
-      <header class="entry-header">
-        <h2>{{ .Title }}</h2>
-      </header>
-      <div class="entry-content">
-        <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
-      </div>
-      <footer class="entry-footer">
-        {{- partial "post_meta.html" . -}}
-      </footer>
-      <a class="entry-link" aria-label="阅读 {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
-    </article>
-    {{- end }}
-  </div>
-
-  {{- if gt $paginator.TotalPages 1 }}
-  <footer class="page-footer">
-    <nav class="pagination">
-      {{- if $paginator.HasPrev }}
-      <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">上一程</a>
-      {{- end }}
-      {{- if $paginator.HasNext }}
-      <a class="next" href="{{ $paginator.Next.URL | absURL }}">下一程</a>
+<section class="quest-library" id="journal-book">
+  <div class="quest-book-wrap">
+    <nav class="quest-tabs" aria-label="手札分类">
+      <button class="quest-tab is-active" type="button" data-quest-filter="all">
+        <span>总览</span>
+      </button>
+      {{- range $index, $tag := $tags }}
+      <button class="quest-tab quest-tab--{{ add $index 1 }}" type="button" data-quest-filter="{{ $tag }}">
+        <span>{{ $tag }}</span>
+      </button>
       {{- end }}
     </nav>
-  </footer>
-  {{- end }}
+
+    <div class="quest-book">
+      <div class="quest-page quest-page--left">
+        <div class="quest-page__ornament" aria-hidden="true">✦</div>
+        <p class="quest-book__eyebrow">Wanderer's Archive</p>
+        <h2 data-quest-title>旅途总览</h2>
+        <div class="quest-rule" aria-hidden="true"></div>
+        <p class="quest-book__intro" data-quest-description>
+          这里收录了旅途中写下的日常、成长与操作记录。选择书签，翻阅不同章节。
+        </p>
+
+        <dl class="quest-stats">
+          <div>
+            <dt>当前页数</dt>
+            <dd><span data-quest-count>{{ len $pages }}</span> 篇</dd>
+          </div>
+          <div>
+            <dt>最近记录</dt>
+            <dd><span data-quest-latest>{{ with index $pages 0 }}{{ .Date.Format "2006.01.02" }}{{ end }}</span></dd>
+          </div>
+        </dl>
+
+        <a class="quest-new-page" href="{{ "write/" | relURL }}">
+          <span class="quest-new-page__icon" aria-hidden="true">+</span>
+          <span>
+            <strong>新建一页</strong>
+            <small>写下今天的旅途</small>
+          </span>
+        </a>
+
+        <div class="quest-seal" aria-hidden="true">
+          <span>W</span>
+        </div>
+      </div>
+
+      <div class="quest-page quest-page--right">
+        <header class="quest-list__header">
+          <div>
+            <p class="quest-book__eyebrow">Quest Log</p>
+            <h3>章节目录</h3>
+          </div>
+          <span class="quest-list__hint">选择一项进入记录</span>
+        </header>
+
+        <div class="quest-list">
+          {{- range $pages }}
+          {{- $pageTags := .Params.tags | default (slice "未分类") }}
+          <article class="quest-item" data-quest-tags="{{ delimit $pageTags "|" }}" data-quest-date="{{ .Date.Format "2006.01.02" }}">
+            <div class="quest-item__sigil" aria-hidden="true">
+              {{- if eq .Section "guides" }}◇{{ else }}✦{{ end -}}
+            </div>
+            <div class="quest-item__body">
+              <p class="quest-item__tags">{{ delimit $pageTags " · " }}</p>
+              <h4>{{ .Title }}</h4>
+              <p>{{ .Summary | plainify | htmlUnescape | truncate 76 }}</p>
+            </div>
+            <div class="quest-item__meta">
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time>
+              <span aria-hidden="true">›</span>
+            </div>
+            <a class="quest-item__link" href="{{ .Permalink }}" aria-label="进入 {{ .Title | plainify }}"></a>
+          </article>
+          {{- end }}
+          <p class="quest-empty" hidden>这一页还没有记录，等下一次冒险再来看看。</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  (() => {
+    const tabs = document.querySelectorAll("[data-quest-filter]");
+    const items = document.querySelectorAll("[data-quest-tags]");
+    const title = document.querySelector("[data-quest-title]");
+    const description = document.querySelector("[data-quest-description]");
+    const count = document.querySelector("[data-quest-count]");
+    const latest = document.querySelector("[data-quest-latest]");
+    const empty = document.querySelector(".quest-empty");
+
+    if (!tabs.length || !items.length) return;
+
+    const selectQuest = (filter) => {
+      let visible = 0;
+
+      tabs.forEach((tab) => {
+        tab.classList.toggle("is-active", tab.dataset.questFilter === filter);
+      });
+
+      items.forEach((item) => {
+        const tags = item.dataset.questTags.split("|");
+        const show = filter === "all" || tags.includes(filter);
+        item.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      title.textContent = filter === "all" ? "旅途总览" : filter;
+      description.textContent = filter === "all"
+        ? "这里收录了旅途中写下的日常、成长与操作记录。选择书签，翻阅不同章节。"
+        : `正在翻阅「${filter}」分类下的记录。每一篇，都是旅途中留下的一枚路标。`;
+      count.textContent = visible;
+      const firstVisible = Array.from(items).find((item) => !item.hidden);
+      latest.textContent = firstVisible ? firstVisible.dataset.questDate : "尚未记录";
+      empty.hidden = visible !== 0;
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => selectQuest(tab.dataset.questFilter));
+    });
+  })();
+</script>
 {{- end }}
