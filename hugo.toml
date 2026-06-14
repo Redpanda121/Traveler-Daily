@@ -1,7 +1,11 @@
-baseURL = "http://example.org/"
-languageCode = "zh-cn"
+baseURL = "http://127.0.0.1:1313/"
+locale = "zh-CN"
 title = "旅者手札"
 theme = "PaperMod"
+
+[caches]
+  [caches.images]
+    dir = ":cacheDir/images"
 
 [params]
   defaultTheme = "auto"

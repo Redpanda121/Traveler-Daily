@@ -33,6 +33,33 @@ git add .
 echo.
 echo Running git commit ...
 git commit -m "%message%"
+if errorlevel 1 (
+  echo.
+  echo Nothing new was saved, or Git reported an error.
+  echo Please read the message above.
+  echo.
+  pause
+  exit /b 1
+)
+
+git remote get-url origin >nul 2>nul
+if errorlevel 1 (
+  echo.
+  echo Saved on this computer.
+  echo GitHub is not connected yet, so it was not uploaded.
+) else (
+  echo.
+  echo Uploading to GitHub ...
+  git push -u origin HEAD
+  if errorlevel 1 (
+    echo.
+    echo Saved on this computer, but upload failed.
+    echo Please check your internet connection or GitHub login.
+  ) else (
+    echo.
+    echo Saved and uploaded. GitHub Pages will update the website automatically.
+  )
+)
 
 echo.
 echo Recent commits:
