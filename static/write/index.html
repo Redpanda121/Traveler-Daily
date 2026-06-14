@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>在线写文章 - 旅者手札</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.7;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    .hint {
+      color: #777;
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 22px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    button {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #999;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    button {
+      margin-top: 28px;
+      border: 0;
+      background: #2da44e;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button:hover {
+      background: #218639;
+    }
+
+    .steps {
+      margin-top: 30px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: rgba(127, 127, 127, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <h1>在线写文章</h1>
+  <p class="hint">填写标题后，进入 GitHub 的 Markdown 编辑器。</p>
+
+  <label for="title">文章标题</label>
+  <input id="title" type="text" placeholder="例如：今天学到的一件事" autofocus>
+
+  <label for="type">文章类型</label>
+  <select id="type">
+    <option value="冒险日志">冒险日志</option>
+    <option value="成长记录">成长记录</option>
+    <option value="读书笔记">读书笔记</option>
+    <option value="随想">随想</option>
+  </select>
+
+  <button id="start" type="button">开始写文章</button>
+
+  <div class="steps">
+    <strong>进入编辑器后：</strong>
+    <ol>
+      <li>在模板最后开始写正文。</li>
+      <li>写完后点击右上角绿色的 <b>Commit changes...</b>。</li>
+      <li>弹窗中再次点击绿色的 <b>Commit changes</b>。</li>
+      <li>等待约一两分钟，博客会自动更新。</li>
+    </ol>
+  </div>
+
+  <script>
+    const repo = "https://github.com/Redpanda121/Traveler-Daily/new/master/content/posts";
+
+    function localDateParts() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return {
+        date: `${year}-${month}-${day}`,
+        compact: `${year}${month}${day}`
+      };
+    }
+
+    function safeFileName(value) {
+      return value
+        .trim()
+        .replace(/[\\/:*?"<>|#%]/g, "")
+        .replace(/\s+/g, "-")
+        .slice(0, 50);
+    }
+
+    document.getElementById("start").addEventListener("click", () => {
+      const title = document.getElementById("title").value.trim();
+      const type = document.getElementById("type").value;
+
+      if (!title) {
+        alert("请先填写文章标题。");
+        document.getElementById("title").focus();
+        return;
+      }
+
+      const date = localDateParts();
+      const fileName = `${date.compact}-${safeFileName(title)}.md`;
+      const content = `---
+title: "${title.replace(/"/g, '\\"')}"
+date: ${date.date}
+draft: false
+tags: ["${type}"]
+---
+
+> 在这里写一句摘要，也可以删除这一行。
+
+`;
+
+      const url = `${repo}?filename=${encodeURIComponent(fileName)}&value=${encodeURIComponent(content)}`;
+      window.location.href = url;
+    });
+  </script>
+</body>
+</html>

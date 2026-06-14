@@ -11,6 +11,11 @@
 
 连接 GitHub Pages 后，每次上传都会自动更新公开网站。
 
+## 在线写作
+
+打开博客的 `/write/` 页面，填写标题并进入 GitHub Markdown 编辑器。
+保存后，文章会写入 `content/posts`，并自动触发网站更新。
+
 ## 第一次发布
 
 1. 在 GitHub 创建一个空的公开仓库，不要勾选自动添加 README。
