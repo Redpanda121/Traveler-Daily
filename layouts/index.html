@@ -5,7 +5,6 @@
   <div class="journey-hero__shade"></div>
   <div class="journey-hero__content">
     <p class="journey-kicker">{{ $hero.eyebrow | default "Wanderer's Journal" }}</p>
-    <h1>{{ $hero.title | default site.Title }}</h1>
     <p class="journey-hero__subtitle">
       {{ $hero.subtitle | default "记录日常，也记录一路成为自己的过程。" }}
     </p>
@@ -18,10 +17,16 @@
 </section>
 
 <section class="journey-journal" id="latest">
-  <header class="journey-section-title">
-    <p class="journey-kicker">Recent Chapters</p>
-    <h2>路上的新页</h2>
-    <p>有些日子波澜壮阔，有些只是安静地向前走。它们都值得留下。</p>
+  <header class="journey-section-head">
+    <div class="journey-section-title">
+      <p class="journey-kicker">Recent Chapters</p>
+      <h2>路上的新页</h2>
+      <p>有些日子波澜壮阔，有些只是安静地向前走。它们都值得留下。</p>
+    </div>
+    <a class="journey-new-page" href="{{ "write/" | relURL }}" title="写一篇新文章">
+      <span aria-hidden="true">+</span>
+      <span>新建一页</span>
+    </a>
   </header>
 
   <div class="journey-posts">

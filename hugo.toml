@@ -51,10 +51,3 @@ theme = "PaperMod"
     name = "关于我"
     url = "/about/"
     weight = 40
-
-  [[menu.main]]
-    identifier = "write"
-    name = "+"
-    url = "write/"
-    title = "写文章"
-    weight = 5
